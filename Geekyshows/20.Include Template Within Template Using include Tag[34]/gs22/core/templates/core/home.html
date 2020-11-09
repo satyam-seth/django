@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% block title %}{{block.super}} Home{% endblock title %}
+{% block content %}
+    <h2>I am New Home Page {{d}}</h2>
+    {% include 'core/topcourse.html' with p='PHP' only %}
+    {% include 'core/topcourse.html' with p='pygame' only %}
+    {% include 'core/topcourse.html' with p='poly' only %}
+    {% include 'core/navbar.html' %}
+{% endblock content %}
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Django Course</li>
+        </ul>
+    </nav>
+    <h2>I am Home Page</h2>
+</body>
+</html> -->

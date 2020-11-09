@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        .errorlist{
+            list-style-type: none;
+            color: red;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }
+        .required{
+            color: blue;
+        }
+        .error{
+            
+        }
+    </style>
+</head> 
+<body>
+    <form action="" method="POST" novalidate>
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
