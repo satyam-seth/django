@@ -1,6 +1,3 @@
-from enum import unique
-from itertools import product
-from random import choice
 from django.db import models
 from django.contrib.auth.models import User
 
