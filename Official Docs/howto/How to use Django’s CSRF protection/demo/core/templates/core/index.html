@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to use Django’s CSRF protection</title>
+</head>
+<body> 
+    <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit</button>
+        <button id="ajax-submit">Submit using ajax call</button>
+    </form>
+
+    <p id="ajax-response"></p>
+
+    <h1>Csrf token in form field set by template tag > <i id="template-tag"></i></h1>
+    <h1>Csrf token in cookies > <i id="cookies"></i></h1>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken1 = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const csrftoken2 = getCookie('csrftoken');
+
+
+        console.log('csrftoken in form field set by template tag -> ', csrftoken1)
+        console.log('csrftoken in cookies -> ', csrftoken2)
+
+        document.querySelector('#template-tag').innerText = `"${csrftoken1}"`;
+        document.querySelector('#cookies').innerText = `"${csrftoken2}"`;
+
+        /**
+         * Submit form using ajax call
+        */  
+        document.querySelector('#ajax-submit').addEventListener('click', (e) => {
+            e.preventDefault();
+        
+            const request = new Request(
+                "{% url 'ajax_submit' %}",
+                {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken1,
+                        'Accept': 'application/json',
+                    },
+                    body:  JSON.stringify({"title": document.querySelector('[name=title]').value}),
+                    mode: 'same-origin' // Do not send CSRF token to another domain.
+                }
+            );
+
+            fetch(request)
+            .then(response => response.json())
+            .then((response) => {
+                const data = JSON.stringify(response);
+                console.log('ajax response -> ', data);
+
+                if(data) {
+                    document.querySelector('form').reset();
+                    document.querySelector('#ajax-response').innerText = `ajax call response > ${data}`;
+                }
+
+            })
+            .catch((e) => console.log);
+
+    })
+    </script>
+</body>
+</html>
