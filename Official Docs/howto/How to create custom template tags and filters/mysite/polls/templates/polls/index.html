@@ -1,0 +1,24 @@
+{% load static %}
+{% load poll_extras %}
+
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+
+
+<h1>
+    {{ 'some0varia0ble'|cut:"0" }}
+</h1>
+
+<h1>
+    {{ 'HeLLoJI'|lower }}
+</h1>
+
+
+{% if latest_question_list %}
+<ul>
+    {% for question in latest_question_list %}
+    <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
